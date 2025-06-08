@@ -12,8 +12,8 @@ public class Personajes {
     private tipoPersonaje tipo;
     private boolean movimiento;
     private boolean atacar;
-    private ImageIcon oculta;
-    private ImageIcon  original;
+    private ImageIcon imagenOculta;
+    private ImageIcon  imagenOriginal;
     
     public enum tipoPersonaje{
         heroes,villanos
@@ -25,8 +25,8 @@ public class Personajes {
         this.tipo=tipo;
         this.atacar=atacar;
         this.movimiento=movimiento;
-        this.oculta=oculta;
-        this.original=original;
+        this.imagenOculta=imagenOculta;
+        this.imagenOriginal=imagenOriginal;
     }
     
     public String getNombre (){
@@ -49,12 +49,12 @@ public class Personajes {
         return atacar;
     }
     
-    public ImageIcon getOculta(){
-        return oculta;
+    public ImageIcon getImagenOculta(){
+        return imagenOculta;
     }
     
-    public ImageIcon getOriginal(){
-        return original;
+    public ImageIcon getImagenOriginal(){
+        return imagenOriginal;
     }
             
 }
