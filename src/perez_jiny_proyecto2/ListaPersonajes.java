@@ -82,7 +82,58 @@ public class ListaPersonajes {
     
     public static List<Personajes>Villanos(){
         List<Personajes>villanos=new ArrayList<>();
+        Object [][] Nombre_Rango = {
+            {"Dr.Moon",10},
+            {"Galactus",9},
+            {"KingPin",8},
+            {"Magneto",8},
+            {"Apocalypse",7},
+            {"GreenGoblin",7},
+            {"Venom",7},
+            {"Bullseye",6},
+            {"OmegaRed",6},
+            {"Onslaught",6},
+            {"RedSkull",6},
+            {"Mystique",5},
+            {"Mysterio",5},
+            {"Dr.Octopus",5},
+            {"Deadpool",5},
+            {"Abomination",4},
+            {"Thanos",4},
+            {"BlackCat",4},
+            {"Sabretooth",4},
+            {"Juggernaut",3},   
+            {"Rhino",3},
+            {"Carnage",3},
+            {"MoleMan",3},
+            {"Lizard",3},
+            {"Mr.Sinister",2},
+            {"Sentinel1",2},
+            {"Ultron",2},
+            {"Sandman",2},
+            {"Leader",2},
+            {"Viper",2},
+            {"Sentinel2",2},
+            {"Electro",2},
+            {"Black Widow",1},
+            {"Kurbisbombe"},
+            {"dieErde"}
+        };
         
+        for (Object[] Villanos: Nombre_Rango) {
+        String nombre = (String) Villanos[0];
+        int rango = (int) Villanos[1];
+
+        villanos.add(new Personajes(
+            nombre,
+            rango,
+            Personajes.tipoPersonaje.heroes,
+            true,
+            true,
+            imagenOriginal(nombre),
+            imagenOculta(Personajes.tipoPersonaje.heroes)
+        ));
+    }
         return villanos;
   }
 }
