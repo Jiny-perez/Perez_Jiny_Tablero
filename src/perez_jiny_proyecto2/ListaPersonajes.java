@@ -127,11 +127,11 @@ public class ListaPersonajes {
         villanos.add(new Personajes(
             nombre,
             rango,
-            Personajes.tipoPersonaje.heroes,
+            Personajes.tipoPersonaje.villanos,
             true,
             true,
             imagenOriginal(nombre),
-            imagenOculta(Personajes.tipoPersonaje.heroes)
+            imagenOculta(Personajes.tipoPersonaje.villanos)
         ));
     }
         return villanos;
