@@ -22,12 +22,12 @@ public class ListaPersonajes {
 
     public static Personajes[] Heroes() {
         String[] nombres = {
-            "Mr.Fantastic", "CaptainAmerica", "ProfessorX", "NickFury", "Spider-Man",
+            "MrFantastic", "CaptainAmerica", "ProfessorX", "NickFury", "Spider-Man",
             "Wolverine", "Namor", "Daredevil", "Silver Surfer", "Hulk",
             "IronMan", "Thor", "HumanTorch", "Cyclops", "InvisibleWoman",
             "GhostRider", "Punisher", "Blade", "DasDing", "Emma Frost",
             "She-Hulk", "Giant-Man", "Beast", "Colossus", "Gambit",
-            "Spider-Girl", "IceMan", "Storm", "Phoenix", "Dr.Strange",
+            "Spider-Girl", "IceMan", "Storm", "Phoenix", "DrStrange",
             "Elektra", "Nightcrawler", "Black Widow", "novaexplosion", "dieErde"
         };
 

@@ -30,7 +30,6 @@ public class StrategoGame extends javax.swing.JFrame {
                     botones[fila][col].setOpaque(false);
                     botones[fila][col].setContentAreaFilled(false);
                     botones[fila][col].setFocusPainted(false);
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
