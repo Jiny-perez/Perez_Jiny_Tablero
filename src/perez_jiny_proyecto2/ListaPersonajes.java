@@ -8,27 +8,15 @@ import javax.swing.ImageIcon;
 
 public class ListaPersonajes {
 
-    private static ImageIcon imagenOriginal(String nombre) {
-        return new ImageIcon(ListaPersonajes.class.getResource("/Imagenes/" + nombre + ".png"));
-    }
-
-    private static ImageIcon imagenOculta(Personajes.tipoPersonaje tipo) {
-        if (tipo == Personajes.tipoPersonaje.heroes) {
-            return new ImageIcon(ListaPersonajes.class.getResource("/Imagenes/ocultoheroes.png"));
-        } else {
-            return new ImageIcon(ListaPersonajes.class.getResource("/Imagenes/ocultoVillanos.png"));
-        }
-    }
-
     public static Personajes[] Heroes() {
         String[] nombres = {
-            "MrFantastic", "CaptainAmerica", "ProfessorX", "NickFury", "Spider-Man",
-            "Wolverine", "Namor", "Daredevil", "Silver Surfer", "Hulk",
+            "MrFantastic", "CapitanAmerica", "ProfessorX", "NickFury", "SpiderMan",
+            "Wolverine", "Namor", "Daredevil", "SilverSurfer", "Hulk",
             "IronMan", "Thor", "HumanTorch", "Cyclops", "InvisibleWoman",
-            "GhostRider", "Punisher", "Blade", "DasDing", "Emma Frost",
-            "She-Hulk", "Giant-Man", "Beast", "Colossus", "Gambit",
+            "GhostRider", "Punisher", "Blade", "DasDing", "EmmaFrost",
+            "She-Hulk", "GiantMan", "Beast", "Colossus", "Gambit",
             "Spider-Girl", "IceMan", "Storm", "Phoenix", "DrStrange",
-            "Elektra", "Nightcrawler", "Black Widow", "novaexplosion", "dieErde"
+            "Elektra", "Nightcrawler", "BlackWidowH", "novaexplosion", "dieErde"
         };
 
         int[] rangos = {
@@ -38,7 +26,7 @@ public class ListaPersonajes {
             4, 4, 4, 4, 3,
             3, 3, 3, 2, 2,
             2, 2, 2, 2, 2,
-            2, 1, 0, 0
+            2, 1, 0, 0, 0
         };
 
         Personajes[] heroes = new Personajes[nombres.length];
@@ -62,13 +50,13 @@ public class ListaPersonajes {
 
     public static Personajes[] Villanos() {
         String[] nombres = {
-            "Dr.Doom", "Galactus", "KingPin", "Magneto", "Apocalypse",
+            "DrDoom", "Galactus", "KingPin", "Magneto", "Apocalypse",
             "GreenGoblin", "Venom", "Bullseye", "OmegaRed", "Onslaught",
-            "RedSkull", "Mystique", "Mysterio", "Dr.Octopus", "Deadpool",
+            "RedSkull", "Mystique", "Mysterio", "DrOctopus", "Deadpool",
             "Abomination", "Thanos", "BlackCat", "Sabretooth", "Juggernaut",
-            "Rhino", "Carnage", "MoleMan", "Lizard", "Mr.Sinister",
+            "Rhino", "Carnage", "MoleMan", "Lizard", "MrSinister",
             "Sentinel1", "Ultron", "Sandman", "Leader", "Viper",
-            "Sentinel2", "Electro", "Black Widow", "Kurbisbombe", "dieErde"
+            "Sentinel2", "Electro", "BlackWidowV", "Kurbisbombe", "dieErdeV"
         };
 
         int[] rangos = {
@@ -78,7 +66,7 @@ public class ListaPersonajes {
             4, 4, 4, 4, 3,
             3, 3, 3, 3, 2,
             2, 2, 2, 2, 2,
-            2, 1, 0, 0
+            2, 1, 0, 0, 0
         };
 
         Personajes[] villanos = new Personajes[nombres.length];
@@ -98,5 +86,26 @@ public class ListaPersonajes {
             );
         }
         return villanos;
+    }
+
+    private static ImageIcon imagenOriginal(String nombre) {
+        String ruta = "/Imagenes/" + nombre + ".png"; // Usa .jpg, .jpeg o .avif si es necesario
+        java.net.URL recurso = ListaPersonajes.class.getResource(ruta);
+
+        return new ImageIcon(recurso);
+    }
+
+    private static ImageIcon imagenOculta(Personajes.tipoPersonaje tipo) {
+        String ruta;
+
+        if (tipo == Personajes.tipoPersonaje.heroes) {
+            ruta = "/Imagenes/ocultoheroes.jpg";
+        } else {
+            ruta = "/Imagenes/ocultoVillanos.avif";
+        }
+
+        java.net.URL recurso = ListaPersonajes.class.getResource(ruta);
+
+        return new ImageIcon(recurso);
     }
 }
