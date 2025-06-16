@@ -56,5 +56,7 @@ public class Personajes {
     public ImageIcon getImagenOriginal(){
         return imagenOriginal;
     }
-            
+    
+    
+    
 }

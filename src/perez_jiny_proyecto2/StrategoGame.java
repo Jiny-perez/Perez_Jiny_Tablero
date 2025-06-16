@@ -12,14 +12,13 @@ public class StrategoGame extends javax.swing.JFrame {
 
     private JButton[][] tablero = new JButton[10][10];
     boolean[][] zonaProhibida = new boolean[10][10];
-     Random rand = new Random ();
-      private Personajes[][] personajesTablero;
+    private Personajes[][] personajesTablero;
 
     public StrategoGame() {
         initComponents();
         tablero();
         zonasProhibidas();
-        colocarPersonajesAleatoriamente();
+        posicionFichas();
         
     }
 
@@ -72,34 +71,13 @@ public class StrategoGame extends javax.swing.JFrame {
 
     }
 
-    private void colocarPersonajesAleatoriamente() {
+    private void posicionFichas() {
     Personajes[] heroes = ListaPersonajes.Heroes();
     Personajes[] villanos = ListaPersonajes.Villanos();
     personajesTablero = new Personajes[10][10]; 
 
-    int colocadosHeroes = 0;
-    while (colocadosHeroes < heroes.length) {
-        int fila = rand.nextInt(4); 
-        int columna = rand.nextInt(10);
+    Fichas.posicionPersonajes(heroes, villanos, tablero, personajesTablero, zonaProhibida);
 
-        if (!zonaProhibida[fila][columna] && personajesTablero[fila][columna] == null) {
-            personajesTablero[fila][columna] = heroes[colocadosHeroes];
-            tablero[fila][columna].setIcon(heroes[colocadosHeroes].getImagenOculta());
-            colocadosHeroes++;
-        }
-    }
-
-    int colocadosVillanos = 0;
-    while (colocadosVillanos < villanos.length) {
-        int fila = rand.nextInt(4) + 6; 
-        int columna = rand.nextInt(10);
-
-        if (!zonaProhibida[fila][columna] && personajesTablero[fila][columna] == null) {
-            personajesTablero[fila][columna] = villanos[colocadosVillanos];
-            tablero[fila][columna].setIcon(villanos[colocadosVillanos].getImagenOculta());
-            colocadosVillanos++;
-        }
-    }
 }
     
     
