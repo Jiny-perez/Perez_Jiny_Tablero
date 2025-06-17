@@ -26,7 +26,7 @@ public class Personajes {
         this.atacar=atacar;
         this.movimiento=movimiento;
         this.imagenOriginal=original;
-        this.imagenOculta=oculta;        
+        this.imagenOculta=oculta;  
     }
     
     public String getNombre (){
@@ -56,7 +56,5 @@ public class Personajes {
     public ImageIcon getImagenOriginal(){
         return imagenOriginal;
     }
-    
-    
     
 }

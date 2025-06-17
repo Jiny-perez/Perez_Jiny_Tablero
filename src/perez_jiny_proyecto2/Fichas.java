@@ -10,7 +10,7 @@ public class Fichas {
     public static void posicionPersonajes(Personajes[] heroes, Personajes[] villanos, JButton[][] tablero,
             Personajes[][] personajesTablero, boolean[][] zonaProhibida) {
 
-        int cantHeroes = 0;
+            int cantHeroes = 0;
         for (Personajes h : heroes) {
             cantHeroes++;
         }

@@ -1,12 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
-
 package perez_jiny_proyecto2;
+
 import javax.swing.*;
 import java.awt.*;
-import java.util.Random;
 
 public class StrategoGame extends javax.swing.JFrame {
 
@@ -14,37 +9,37 @@ public class StrategoGame extends javax.swing.JFrame {
     boolean[][] zonaProhibida = new boolean[10][10];
     private Personajes[][] personajesTablero;
 
+    private int filaSeleccionada = -1;
+    private int columnaSeleccionada = -1;
+    private Personajes personajeSeleccionado = null;
+    private boolean turnoJugador1 = true;
+
     public StrategoGame() {
         initComponents();
         tablero();
         zonasProhibidas();
         posicionFichas();
-        
+        habilitarClickTablero();
     }
 
     private void tablero() {
         for (int fila = 0; fila < 10; fila++) {
             for (int columna = 0; columna < 10; columna++) {
-            int fil = fila;
-            int col = columna;
-            
-            JButton boton = new JButton();
-            tablero [fila][col] = boton;
-            jPanel2.add(boton);
-            
-            boton.setPreferredSize(new Dimension(60, 60));
-            boton.setOpaque(false);
-            boton.setContentAreaFilled(false);
-            boton.setFocusPainted(false);
-            
-            boton.addActionListener(e -> {
-            if (zonaProhibida[fil][col]) {
-                return;
+                int fil = fila;
+                int col = columna;
+
+                JButton boton = new JButton();
+                tablero[fila][col] = boton;
+                jPanel2.add(boton);
+
+                boton.setPreferredSize(new Dimension(60, 60));
+                boton.setOpaque(false);
+                boton.setContentAreaFilled(false);
+                boton.setFocusPainted(false);
+
             }
-            });
         }
     }
-}
 
     private void zonasProhibidas() {
         int[][] zonaAmarilla = {
@@ -72,15 +67,109 @@ public class StrategoGame extends javax.swing.JFrame {
     }
 
     private void posicionFichas() {
-    Personajes[] heroes = ListaPersonajes.Heroes();
-    Personajes[] villanos = ListaPersonajes.Villanos();
-    personajesTablero = new Personajes[10][10]; 
+        Personajes[] heroes = ListaPersonajes.Heroes();
+        Personajes[] villanos = ListaPersonajes.Villanos();
+        personajesTablero = new Personajes[10][10];
 
-    Fichas.posicionPersonajes(heroes, villanos, tablero, personajesTablero, zonaProhibida);
+        Fichas.posicionPersonajes(heroes, villanos, tablero, personajesTablero, zonaProhibida);
 
-}
-    
-    
+    }
+
+    private void habilitarClickTablero() {
+        for (int fila = 0; fila < 10; fila++) {
+            for (int columna = 0; columna < 10; columna++) {
+                int fil = fila;
+                int col = columna;
+                tablero[fil][col].addActionListener(e -> clickBotones (fil, col));
+            }
+        }
+    }
+
+    private void clickBotones (int filaDestino, int columnaDestino) {
+        if (personajeSeleccionado == null) {
+            FichaSeleccionada (filaDestino, columnaDestino);
+        } else {
+            movimiento(filaDestino, columnaDestino);
+        }
+    }
+
+    private void FichaSeleccionada (int fila, int columna) {
+        Personajes seleccionado = personajesTablero[fila][columna];
+
+        if (seleccionado == null) {
+            JOptionPane.showMessageDialog(null, "No hay ficha para seleccionar aquí.");
+            return;
+        }
+
+        boolean turnoValido = (turnoJugador1 && seleccionado.getTipo() == Personajes.tipoPersonaje.heroes) || (!turnoJugador1 && seleccionado.getTipo() == Personajes.tipoPersonaje.villanos);
+
+        if (!turnoValido) {
+            JOptionPane.showMessageDialog(null, "Espera tu turno...");
+            return;
+        }
+
+        personajeSeleccionado = seleccionado;
+        filaSeleccionada = fila;
+        columnaSeleccionada = columna;
+        System.out.println("Ficha seleccionada: " + personajeSeleccionado.getNombre());
+    }   
+
+    private void movimiento (int filaDestino, int columnaDestino) {
+        if (!LogicaJuego.Movimiento(personajeSeleccionado, filaSeleccionada, columnaSeleccionada,  filaDestino, columnaDestino, personajesTablero, zonaProhibida)) {
+            JOptionPane.showMessageDialog(null, "Movimiento inválido.");
+        resetearSeleccion();
+            return;
+        }
+
+        Personajes destino = personajesTablero[filaDestino][columnaDestino];
+
+        if (destino == null) {
+            moverFicha(filaDestino, columnaDestino);
+        } else if (personajeSeleccionado.getTipo().equals(destino.getTipo())) {
+            JOptionPane.showMessageDialog(null, "Movimiento inválido. Estas atacando a tu propio bando.");
+        } else {
+            batalla(destino, filaDestino, columnaDestino);
+        }
+
+        resetearSeleccion();
+    }
+
+    private void moverFicha(int fila, int col) {
+        personajesTablero[fila][col] = personajeSeleccionado;
+        personajesTablero[filaSeleccionada][columnaSeleccionada] = null;
+        tablero[fila][col].setIcon(personajeSeleccionado.getImagenOculta());
+        tablero[filaSeleccionada][columnaSeleccionada].setIcon(null);
+        turnoJugador1 = !turnoJugador1;
+    }
+
+    private void batalla(Personajes villano, int fila, int col) {
+        String resultado = LogicaJuego.batalla(personajeSeleccionado, villano);
+        switch (resultado) {
+            case "Gana":
+                personajesTablero[fila][col] = personajeSeleccionado;
+                tablero[fila][col].setIcon(personajeSeleccionado.getImagenOculta());
+                break;
+            case "Pierde":
+                break;
+            case "Empate":
+                personajesTablero[fila][col] = null;
+                tablero[fila][col].setIcon(null);
+                break;
+            case "JuegoGanado":
+                JOptionPane.showMessageDialog(null, "¡Felicidades, has ganado el juego!");
+                System.exit(0);
+                break;
+        }
+        personajesTablero[filaSeleccionada][columnaSeleccionada] = null;
+        tablero[filaSeleccionada][columnaSeleccionada].setIcon(null);
+        turnoJugador1 = !turnoJugador1;
+    }
+
+    private void resetearSeleccion() {
+        personajeSeleccionado = null;
+        filaSeleccionada = -1;
+        columnaSeleccionada = -1;
+    }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -130,7 +219,7 @@ public class StrategoGame extends javax.swing.JFrame {
                 new StrategoGame().setVisible(true);
             }
         });
-        
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
