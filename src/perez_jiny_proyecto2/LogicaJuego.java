@@ -11,13 +11,11 @@ public class LogicaJuego {
             return false;
         }
 
-        String nombre = personaje.getNombre();
-        int rango = personaje.getRango();
-
-        if (nombre.equals("dieErdeH") || nombre.equals("dieErdeV")
-                || nombre.equals("novaexplosion") || nombre.equals("Kurbisbombe")) {
+        if (!personaje.getMovimiento()) {
             return false;
         }
+
+        int rango = personaje.getRango();
 
         if (rango == 2) {
             if (filaSeleccionada == filaDestino) {
@@ -58,32 +56,34 @@ public class LogicaJuego {
     }
 
     public static String batalla(Personajes heroes, Personajes villanos) {
-        int jugador1 = heroes.getRango();
-        int jugador2 = villanos.getRango();
-        
+
+        int rangoHeroe = heroes.getRango();
+        int rangoVillano = villanos.getRango();
+
         String nombrehereoe = heroes.getNombre();
         String nombrevillano = villanos.getNombre();
-        
-        boolean esBomba = nombrevillano.equals("novaexplosion") || nombrevillano.equals("Kurbisbombe");
-        if (esBomba) {
-            if (jugador1 == 3) {
+
+        if (nombrevillano.startsWith("novaexplosion") || nombrevillano.startsWith("Kurbisbombe")) {
+            if (rangoHeroe == 3) {
                 return "Gana";
+            } else {
+                return "Pierde";
             }
-            return "Pierde";
         }
+
         if (nombrevillano.equals("dieErdeH") || nombrevillano.equals("dieErdeV")) {
             return "JuegoGanado";
         }
-        if (jugador1 == 1 && jugador2 == 10) {
+
+        if (rangoHeroe == 1 && rangoVillano == 10) {
             return "Gana";
         }
-        if (jugador1 > jugador2) {
+        if (rangoHeroe > rangoVillano) {
             return "Gana";
-        } else if (jugador1 < jugador2) {
+        } else if (rangoHeroe < rangoVillano) {
             return "Pierde";
         } else {
             return "Empate";
         }
     }
 }
-

@@ -72,6 +72,7 @@ public class StrategoGame extends javax.swing.JFrame {
         personajesTablero = new Personajes[10][10];
 
         Fichas.posicionPersonajes(heroes, villanos, tablero, personajesTablero, zonaProhibida);
+        visibilidadFichas();
 
     }
 
@@ -80,20 +81,20 @@ public class StrategoGame extends javax.swing.JFrame {
             for (int columna = 0; columna < 10; columna++) {
                 int fil = fila;
                 int col = columna;
-                tablero[fil][col].addActionListener(e -> clickBotones (fil, col));
+                tablero[fil][col].addActionListener(e -> clickBotones(fil, col));
             }
         }
     }
 
-    private void clickBotones (int filaDestino, int columnaDestino) {
+    private void clickBotones(int filaDestino, int columnaDestino) {
         if (personajeSeleccionado == null) {
-            FichaSeleccionada (filaDestino, columnaDestino);
+            FichaSeleccionada(filaDestino, columnaDestino);
         } else {
             movimiento(filaDestino, columnaDestino);
         }
     }
 
-    private void FichaSeleccionada (int fila, int columna) {
+    private void FichaSeleccionada(int fila, int columna) {
         Personajes seleccionado = personajesTablero[fila][columna];
 
         if (seleccionado == null) {
@@ -112,12 +113,12 @@ public class StrategoGame extends javax.swing.JFrame {
         filaSeleccionada = fila;
         columnaSeleccionada = columna;
         System.out.println("Ficha seleccionada: " + personajeSeleccionado.getNombre());
-    }   
+    }
 
-    private void movimiento (int filaDestino, int columnaDestino) {
-        if (!LogicaJuego.Movimiento(personajeSeleccionado, filaSeleccionada, columnaSeleccionada,  filaDestino, columnaDestino, personajesTablero, zonaProhibida)) {
+    private void movimiento(int filaDestino, int columnaDestino) {
+        if (!LogicaJuego.Movimiento(personajeSeleccionado, filaSeleccionada, columnaSeleccionada, filaDestino, columnaDestino, personajesTablero, zonaProhibida)) {
             JOptionPane.showMessageDialog(null, "Movimiento inválido.");
-        resetearSeleccion();
+            resetearSeleccion();
             return;
         }
 
@@ -135,34 +136,48 @@ public class StrategoGame extends javax.swing.JFrame {
     }
 
     private void moverFicha(int fila, int col) {
+
         personajesTablero[fila][col] = personajeSeleccionado;
         personajesTablero[filaSeleccionada][columnaSeleccionada] = null;
         tablero[fila][col].setIcon(personajeSeleccionado.getImagenOculta());
         tablero[filaSeleccionada][columnaSeleccionada].setIcon(null);
+
         turnoJugador1 = !turnoJugador1;
+        actualizarTurno();
     }
 
     private void batalla(Personajes villano, int fila, int col) {
+
         String resultado = LogicaJuego.batalla(personajeSeleccionado, villano);
+
         switch (resultado) {
             case "Gana":
+                agregarDerrotado(villano);
                 personajesTablero[fila][col] = personajeSeleccionado;
                 tablero[fila][col].setIcon(personajeSeleccionado.getImagenOculta());
                 break;
+
             case "Pierde":
+                agregarDerrotado(personajeSeleccionado);
                 break;
+
             case "Empate":
+                agregarDerrotado(personajeSeleccionado);
+                agregarDerrotado(villano);
                 personajesTablero[fila][col] = null;
                 tablero[fila][col].setIcon(null);
                 break;
+
             case "JuegoGanado":
                 JOptionPane.showMessageDialog(null, "¡Felicidades, has ganado el juego!");
                 System.exit(0);
                 break;
         }
+
         personajesTablero[filaSeleccionada][columnaSeleccionada] = null;
         tablero[filaSeleccionada][columnaSeleccionada].setIcon(null);
         turnoJugador1 = !turnoJugador1;
+        actualizarTurno();
     }
 
     private void resetearSeleccion() {
@@ -170,12 +185,67 @@ public class StrategoGame extends javax.swing.JFrame {
         filaSeleccionada = -1;
         columnaSeleccionada = -1;
     }
+
+    private void actualizarTurno() {
+        if (turnoJugador1) {
+            lblTurnos.setText("Turno: Héroes");
+        } else {
+            lblTurnos.setText("Turno: Villanos");
+        }
+        visibilidadFichas();
+    }
+
+    private void agregarDerrotado(Personajes derrotado) {
+        ImageIcon imagenOculta = derrotado.getImagenOculta();
+        Image imagenEscalada = imagenOculta.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
+        JLabel etiqueta = new JLabel(new ImageIcon(imagenEscalada));
+
+        int limite = 7;
+        if (derrotado.getTipo() == Personajes.tipoPersonaje.heroes) {
+            if (heroesDerrotado.getComponentCount() >= limite) {
+                heroesDerrotado.remove(0);
+            }
+            heroesDerrotado.add(etiqueta);
+            heroesDerrotado.revalidate();
+            heroesDerrotado.repaint();
+        } else {
+            if (villanosDerrotados.getComponentCount() >= limite) {
+                villanosDerrotados.remove(0);
+            }
+            villanosDerrotados.add(etiqueta);
+            villanosDerrotados.revalidate();
+            villanosDerrotados.repaint();
+        }
+    }
+
+    private void visibilidadFichas() {
+        for (int fila = 0; fila < 10; fila++) {
+            for (int col = 0; col < 10; col++) {
+                Personajes personajes = personajesTablero[fila][col];
+                if (personajes != null) {
+                    if ((turnoJugador1 && personajes.getTipo() == Personajes.tipoPersonaje.heroes)
+                            || (!turnoJugador1 && personajes.getTipo() == Personajes.tipoPersonaje.villanos)) {
+                        tablero[fila][col].setIcon(personajes.getImagenOculta());
+                    } else {
+                        tablero[fila][col].setIcon(personajes.getImagenOriginal());
+                    }
+                } else {
+                    tablero[fila][col].setIcon(null);
+                }
+            }
+        }
+    }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        lblTurnos = new javax.swing.JLabel();
+        heroesDerrotado = new javax.swing.JPanel();
+        etiquetaH = new javax.swing.JLabel();
+        villanosDerrotados = new javax.swing.JPanel();
+        etiquetaV = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -189,21 +259,44 @@ public class StrategoGame extends javax.swing.JFrame {
         jLabel1.setText("jLabel1");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 860, 650));
 
+        lblTurnos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTurnos.setText("Turno: Héroes");
+
+        etiquetaH.setText("HEROES");
+        heroesDerrotado.add(etiquetaH);
+
+        etiquetaV.setText("VILLANOS");
+        villanosDerrotados.add(etiquetaV);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 933, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(heroesDerrotado, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 892, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(villanosDerrotados, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(124, 124, 124)
+                        .addComponent(lblTurnos, javax.swing.GroupLayout.PREFERRED_SIZE, 859, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 680, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblTurnos)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(villanosDerrotados, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 643, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(heroesDerrotado, javax.swing.GroupLayout.PREFERRED_SIZE, 551, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 680, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
 
         pack();
@@ -215,6 +308,7 @@ public class StrategoGame extends javax.swing.JFrame {
     public static void main(String args[]) {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new StrategoGame().setVisible(true);
             }
@@ -222,9 +316,15 @@ public class StrategoGame extends javax.swing.JFrame {
 
     }
 
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel etiquetaH;
+    private javax.swing.JLabel etiquetaV;
+    private javax.swing.JPanel heroesDerrotado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel lblTurnos;
+    private javax.swing.JPanel villanosDerrotados;
     // End of variables declaration//GEN-END:variables
 }
