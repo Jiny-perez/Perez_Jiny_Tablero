@@ -1,4 +1,4 @@
-package perez_jiny_proyecto2;
+package StrategoGame;
 
 import javax.swing.*;
 import java.awt.*;
