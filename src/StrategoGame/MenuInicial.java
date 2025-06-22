@@ -1,4 +1,5 @@
 package StrategoGame;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -6,9 +7,13 @@ public class MenuInicial extends javax.swing.JFrame {
 
     public MenuInicial() {
         initComponents();
-
+        
+        setSize(970, 730);
+        setResizable(false);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-   
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -75,7 +80,7 @@ public class MenuInicial extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSalirActionPerformed
-       System.exit(0);
+        System.exit(0);
     }//GEN-LAST:event_BtnSalirActionPerformed
 
     private void BtnLogInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLogInActionPerformed
