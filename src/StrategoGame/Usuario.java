@@ -24,9 +24,7 @@ public class Usuario {
         return username;
     }
 
-    public boolean validarContra(String contra) {
-        return this.password.equals(contra);
-    }
+
 
     public void setPuntos(int puntos) {
         this.puntos = puntos;
@@ -38,5 +36,9 @@ public class Usuario {
 
     public void setPartidasConVillanos(int partidasConVillanos) {
         this.partidasConVillanos = partidasConVillanos;
+    }
+
+    public boolean validarPassword(String pass) {
+        return this.password.equals(pass);
     }
 }

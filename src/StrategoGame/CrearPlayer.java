@@ -11,8 +11,8 @@ import javax.swing.JFrame;
 public class CrearPlayer extends javax.swing.JFrame {
 
     private static int CantidadMaxUsuario = 100;
-    private static Usuario[] jugadores = new Usuario[CantidadMaxUsuario];
-    private static int totalJugadores = 0;
+    public static Usuario[] jugadores = new Usuario[CantidadMaxUsuario];
+    public static int totalJugadores = 0;
 
     public CrearPlayer() {
         initComponents();
@@ -21,19 +21,18 @@ public class CrearPlayer extends javax.swing.JFrame {
 
     public CrearPlayer(MenuInicial menu) {
         initComponents();
-        
+
         setSize(970, 730);
         setResizable(false);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
         addWindowListener(new java.awt.event.WindowAdapter() {
-        @Override
-        public void windowClosing(java.awt.event.WindowEvent e) {
-            System.out.println("Ventana cerrada con la X");
-            dispose();
-        }
-    });
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                new MenuInicial().setVisible(true);
+            }
+        });
 
     }
 
@@ -75,8 +74,8 @@ public class CrearPlayer extends javax.swing.JFrame {
 
         JOptionPane.showMessageDialog(this, "Jugador creado con éxito.\nUsuario: " + usuario,
                 "Registro exitoso", JOptionPane.INFORMATION_MESSAGE);
-        
-         new MenuInicial().setVisible(true);
+
+        new MenuInicial().setVisible(true);
         dispose();
     }
 
@@ -166,13 +165,13 @@ public class CrearPlayer extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-         new MenuInicial().setVisible(true);
+        new MenuInicial().setVisible(true);
         dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnCrearJugadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearJugadorActionPerformed
         registrarJugador();
-        
+
     }//GEN-LAST:event_btnCrearJugadorActionPerformed
 
     /**
