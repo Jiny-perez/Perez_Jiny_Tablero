@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package StrategoGame;
 
 import javax.swing.*;
@@ -130,7 +127,7 @@ public class LogIn extends javax.swing.JFrame {
         Usuario jugador = validarIniciarSesion(usuario, contra);
         if (jugador != null) {
             JOptionPane.showMessageDialog(this, "Bienvenido " + usuario + "!", "Login exitoso", JOptionPane.INFORMATION_MESSAGE);
-            new MenuInicial().setVisible(true);
+            new MenuPrincipal(this).setVisible(true);
             dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -148,6 +145,7 @@ public class LogIn extends javax.swing.JFrame {
             }
         }
         return null;
+         
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
 
     /**
