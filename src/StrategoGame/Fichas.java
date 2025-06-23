@@ -8,7 +8,7 @@ public class Fichas {
     private static Random rand = new Random();
 
     public static void posicionPersonajes(Personajes[] heroes, Personajes[] villanos, JButton[][] tablero,
-                                         Personajes[][] personajesTablero, boolean[][] zonaProhibida) {
+            Personajes[][] personajesTablero, boolean[][] zonaProhibida) {
 
         int cantHeroes = heroes.length;
         boolean[] totalHeroes = new boolean[cantHeroes];
@@ -33,130 +33,98 @@ public class Fichas {
     }
 
     private static int[] tierra(Personajes[] personajes, boolean[] ocupado, JButton[][] tablero,
-                                Personajes[][] personajeColocado, boolean esHeroe) {
+            Personajes[][] personajeColocado, boolean esHeroe) {
 
-        int fila;
-        if (esHeroe) {
-            fila = 9;
-        } else {
-            fila = 0;
-        }
-
-        int columna;     
+        int fila = esHeroe ? 9 : 0;
+        int columna;
         do {
-            columna = rand.nextInt(8) + 1; 
+            columna = rand.nextInt(8) + 1;
         } while (personajeColocado[fila][columna] != null);
 
-        String nombreTierra;
-        if (esHeroe) {
-            nombreTierra = "dieErdeH";
-        } else {
-            nombreTierra = "dieErdeV";
-        }
-
+        String nombreTierra = esHeroe ? "dieErdeH" : "dieErdeV";
         Personajes tierra = extraerNombre(personajes, ocupado, nombreTierra);
+
         if (tierra != null) {
             colocarTierra(tierra, fila, columna, tablero, personajeColocado);
             return new int[]{fila, columna};
         }
 
-        return new int[]{-1, -1}; 
+        return new int[]{-1, -1};
     }
 
-    private static void bombasAlrededor(Personajes[] personajes, boolean[] ocupado, JButton[][] tablero, 
+    private static void bombasAlrededor(Personajes[] personajes, boolean[] ocupado, JButton[][] tablero,
             Personajes[][] personajesTablero, int[] coordenadasTierra, boolean esHeroe) {
-       
-        if (coordenadasTierra[0] == -1) return;
 
-        int tierraFila = coordenadasTierra[0];
-        int tierraColumna = coordenadasTierra[1];
+        if (coordenadasTierra[0] == -1) {
+            return;
+        }
 
-        int[][] casillaValida = new int[8][2];
-        int contador = 0;
+        int fila = coordenadasTierra[0];
+        int columna = coordenadasTierra[1];
 
-        for (int desplazamientoFila = -1; desplazamientoFila <= 1; desplazamientoFila++) {
-            for (int desplazamientoColumna = -1; desplazamientoColumna <= 1; desplazamientoColumna++) {
-                if (desplazamientoFila == 0 && desplazamientoColumna == 0) continue;
+        String nombreBomba = esHeroe ? "novaexplosion" : "Kurbisbombe";
 
-                int filaNueva = tierraFila + desplazamientoFila;
-                int columnaNueva = tierraColumna + desplazamientoColumna;
+        int[][] posiciones = new int[3][2];
 
-                if (verificacionPosicion (filaNueva, columnaNueva, esHeroe, personajesTablero)) {
-                    casillaValida[contador][0] = filaNueva;
-                    casillaValida[contador][1] = columnaNueva;
-                    contador++;
+        posiciones[0][0] = fila;         
+        posiciones[0][1] = columna - 1;    
+
+        posiciones[1][0] = fila;          
+        posiciones[1][1] = columna + 1;   
+
+        posiciones[2][0] = esHeroe ? fila - 1 : fila + 1;
+        posiciones[2][1] = columna;
+
+        for (int i = 0; i < 3; i++) {
+            int f = posiciones[i][0];
+            int c = posiciones[i][1];
+
+            if (verificacionPosicionBombas(f, c, esHeroe, personajesTablero)) {
+                Personajes bomba = extraerNombre(personajes, ocupado, nombreBomba);
+                if (bomba != null) {
+                    personajesTablero[f][c] = bomba;
                 }
             }
         }
-
-        String nombreBomba;
-        if (esHeroe) {
-            nombreBomba = "novaexplosion";
-        } else {
-            nombreBomba = "Kurbisbombe";
-        }
-
-        int bombasColocadas = 0;
-        while (contador > 0 && bombasColocadas < 6) {
-            Personajes bomba = extraerNombre(personajes, ocupado, nombreBomba);
-            if (bomba == null) break;
-
-            int indice = rand.nextInt(contador);
-            int fila = casillaValida[indice][0];
-            int columna = casillaValida [indice][1];
-
-            personajesTablero[fila][columna] = bomba;
-            tablero[fila][columna].setIcon(bomba.getImagenOculta());
-
-            casillaValida[indice][0] = casillaValida[contador - 1][0];
-            casillaValida[indice][1] = casillaValida[contador - 1][1];
-            contador--;
-            bombasColocadas++;
-        }
     }
 
-    private static boolean verificacionPosicion (int fila, int columna, boolean esHeroe, Personajes[][] personajesTablero) {
+    private static boolean verificacionPosicionBombas(int fila, int columna, boolean esHeroe, Personajes[][] personajesTablero) {
         if (fila < 0 || fila >= 10 || columna < 0 || columna >= 10) {
             return false;
         }
         if (personajesTablero[fila][columna] != null) {
             return false;
         }
+
         if (esHeroe) {
-            return fila >= 6; 
+            return fila == 8 || fila == 9;
         } else {
-            return fila <= 3; 
-    }
+            return fila == 0 || fila == 1;
+        }
     }
 
     private static void bombas(Personajes[] personajes, boolean[] ocupado, JButton[][] tablero,
-                               Personajes[][] personajeColocado, boolean esHeroe) {
+            Personajes[][] personajeColocado, boolean esHeroe) {
 
-        int[] filas;
-        if (esHeroe) {
-            filas = new int[]{8, 9};
-        } else {
-            filas = new int[]{0, 1};
-        }
+        int[] filas = esHeroe ? new int[]{8, 9} : new int[]{0, 1};
+        int bombasColocadas = 0;
 
-        while (true) {
-            String nombreBomba;
-            if (esHeroe) {
-                nombreBomba = "novaexplosion";
-            } else {
-                nombreBomba = "Kurbisbombe";
-            }
-
+        while (bombasColocadas < 3) {
+            String nombreBomba = esHeroe ? "novaexplosion" : "Kurbisbombe";
             Personajes bomba = extraerNombre(personajes, ocupado, nombreBomba);
             if (bomba == null) {
                 break;
             }
-            colocarBomba(bomba, filas, tablero, personajeColocado);
+
+            boolean colocada = colocarBomba(bomba, filas, tablero, personajeColocado);
+            if (colocada) {
+                bombasColocadas++;
+            }
         }
     }
 
     private static void rango2(Personajes[] personajes, boolean[] ocupado, int rango, JButton[][] tablero,
-                               Personajes[][] personajeColocado, int[] filas) {
+            Personajes[][] personajeColocado, int[] filas) {
         for (int i = 0; i < personajes.length; i++) {
             if (!ocupado[i] && personajes[i].getRango() == rango) {
                 if (colocarBomba(personajes[i], filas, tablero, personajeColocado)) {
@@ -167,7 +135,7 @@ public class Fichas {
     }
 
     private static void espaciosRestantes(Personajes[] personajes, boolean[] usados, int[] filas,
-                                          JButton[][] tablero, Personajes[][] personajeColocado) {
+            JButton[][] tablero, Personajes[][] personajeColocado) {
         for (int i = 0; i < personajes.length; i++) {
             if (!usados[i]) {
                 if (colocarBomba(personajes[i], filas, tablero, personajeColocado)) {
@@ -178,7 +146,7 @@ public class Fichas {
     }
 
     private static boolean colocarBomba(Personajes personajes, int[] filas, JButton[][] tablero,
-                                        Personajes[][] personajeColocado) {
+            Personajes[][] personajeColocado) {
         for (int intento = 0; intento < 100; intento++) {
             int fila = filas[rand.nextInt(filas.length)];
             int columna = rand.nextInt(10);
@@ -191,10 +159,11 @@ public class Fichas {
     }
 
     private static void colocarTierra(Personajes personajes, int fila, int columna, JButton[][] tablero,
-                                      Personajes[][] personajeColocado) {
+            Personajes[][] personajeColocado) {
         personajeColocado[fila][columna] = personajes;
         tablero[fila][columna].setIcon(personajes.getImagenOculta());
     }
+
 
     private static Personajes extraerNombre(Personajes[] personajes, boolean[] ocupado, String nombre) {
         for (int i = 0; i < personajes.length; i++) {
@@ -217,4 +186,5 @@ public class Fichas {
         }
         return null;
     }
+
 }

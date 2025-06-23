@@ -6,8 +6,9 @@ import java.awt.*;
 import javax.swing.JFrame;
 
 public class LogIn extends javax.swing.JFrame {
+    public static Usuario jugadorPrincipal;
 
-    public LogIn(MenuInicial menu) {
+    public LogIn(MenuInicial menuInicial) {
         initComponents();
         setSize(970, 730);
 
@@ -126,6 +127,7 @@ public class LogIn extends javax.swing.JFrame {
 
         Usuario jugador = validarIniciarSesion(usuario, contra);
         if (jugador != null) {
+            LogIn.jugadorPrincipal= jugador;
             JOptionPane.showMessageDialog(this, "Bienvenido " + usuario + "!", "Login exitoso", JOptionPane.INFORMATION_MESSAGE);
             new MenuPrincipal(this).setVisible(true);
             dispose();
