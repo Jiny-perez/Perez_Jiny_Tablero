@@ -24,6 +24,10 @@ public class StrategoGame extends javax.swing.JFrame {
         posicionFichas();
         habilitarClickTablero();
         actualizarTurno();
+
+        SwingUtilities.invokeLater(() -> {
+            visibilidadFichas();
+        });
     }
 
     public StrategoGame(String nombreJugador1, String nombreJugador2) {
@@ -35,7 +39,7 @@ public class StrategoGame extends javax.swing.JFrame {
         posicionFichas();
         habilitarClickTablero();
         actualizarTurno();
-        
+
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent e) {
@@ -256,21 +260,29 @@ public class StrategoGame extends javax.swing.JFrame {
     private void visibilidadFichas() {
         for (int fila = 0; fila < 10; fila++) {
             for (int col = 0; col < 10; col++) {
-                Personajes personajes = personajesTablero[fila][col];
-                if (personajes != null) {
-                    if ((turnoJugador1 && personajes.getTipo() == Personajes.tipoPersonaje.heroes)
-                            || (!turnoJugador1 && personajes.getTipo() == Personajes.tipoPersonaje.villanos)) {
-                        tablero[fila][col].setIcon(personajes.getImagenOculta());
+                Personajes personaje = personajesTablero[fila][col];
+                JButton boton = tablero[fila][col];
+
+                if (personaje != null) {
+                    if ((turnoJugador1 && personaje.getTipo() == Personajes.tipoPersonaje.heroes)
+                            || (!turnoJugador1 && personaje.getTipo() == Personajes.tipoPersonaje.villanos)) {
+                        boton.setIcon(escalarImagen(personaje.getImagenOculta(), boton));
                     } else {
-                        tablero[fila][col].setIcon(personajes.getImagenOriginal());
+                        boton.setIcon(escalarImagen(personaje.getImagenOriginal(), boton));
                     }
                 } else {
-                    tablero[fila][col].setIcon(null);
+                    boton.setIcon(null);
                 }
             }
         }
     }
 
+    private ImageIcon escalarImagen(ImageIcon imagen, JButton boton) {
+        int ancho = boton.getWidth() > 0 ? boton.getWidth() : 60;
+        int alto = boton.getHeight() > 0 ? boton.getHeight() : 60;
+        Image imgEscalada = imagen.getImage().getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);
+        return new ImageIcon(imgEscalada);
+    }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -418,9 +430,7 @@ public class StrategoGame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnRetiroActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+ 
     public static void main(String args[]) {
 
         java.awt.EventQueue.invokeLater(new Runnable() {

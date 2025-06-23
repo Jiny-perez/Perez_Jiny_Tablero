@@ -107,9 +107,9 @@ public class ListaPersonajes {
         String ruta;
 
         if (tipo == Personajes.tipoPersonaje.heroes) {
-            ruta = "/Imagenes/ocultoheroes.jpg";
+            ruta = "/Imagenes/ocultoheroes.png";
         } else {
-            ruta = "/Imagenes/ocultoVillanos.jpg";
+            ruta = "/Imagenes/ocultoVillanos.png";
         }
 
         java.net.URL recurso = ListaPersonajes.class.getResource(ruta);
