@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package StrategoGame;
 
 public class RegistroPartidas {
@@ -19,11 +15,6 @@ public class RegistroPartidas {
         this.ganador = ganador;
         this.bandoJugador1 = bandoJugador1;
         this.bandoJugador2 = bandoJugador2;
-        this.ganador = ganador;
-    }
-
-    public void setGanador(String ganador) {
-        this.ganador = ganador;
     }
 
     public String getJugador1() {
@@ -46,7 +37,41 @@ public class RegistroPartidas {
         return bandoJugador2;
     }
 
-    public boolean ganoJugador(String nombreJugador) {
+    public String getBandoJugador(String nombreJugador) {
+        if (jugador1.equals(nombreJugador)) {
+            return bandoJugador1;
+        } else if (jugador2.equals(nombreJugador)) {
+            return bandoJugador2;
+        }
+        return "";
+    }
+
+    public String getOponente(String nombreJugador) {
+        if (jugador1.equals(nombreJugador)) {
+            return jugador2;
+        } else if (jugador2.equals(nombreJugador)) {
+            return jugador1;
+        }
+        return "";
+    }
+
+    public boolean ganoElJugador(String nombreJugador) {
         return ganador.equals(nombreJugador);
+    }
+
+    public String ResetearLog(String jugadorActual) {
+        String oponente = getOponente(jugadorActual);
+        String rolActual = getBandoJugador(jugadorActual);
+        String rolOponente = getBandoJugador(oponente);
+        String resultado = ganoElJugador(jugadorActual) ? "GANÓ" : "PERDIÓ";
+
+        return "vs " + oponente + " | " + jugadorActual + ": " + rolActual
+                + " - " + oponente + ": " + rolOponente + " | " + resultado;
+    }
+
+    @Override
+    public String toString() {
+        return jugador1 + ": " + bandoJugador1 + " vs " + jugador2 + ": " + bandoJugador2
+                + " - Ganador: " + ganador;
     }
 }

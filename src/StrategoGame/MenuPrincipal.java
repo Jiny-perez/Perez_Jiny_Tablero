@@ -152,7 +152,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 + LogIn.jugadorPrincipal.getUsername() + " (" + bandoElegido + ") vs "
                 + oponente.getUsername() + " (" + bandoOponente + ")");
 
-        // Aquí pasamos los nombres reales a StrategoGame:
         String jugador1 = LogIn.jugadorPrincipal.getUsername();
         String jugador2 = oponente.getUsername();
 
@@ -162,50 +161,22 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnStrategoActionPerformed
 
     private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
-        new MenuInicial().setVisible(true);
-        dispose();
+        int opcion = JOptionPane.showConfirmDialog(this,
+                "¿Estás seguro de que deseas cerrar sesión?",
+                "Cerrar Sesión",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+
+        if (opcion == JOptionPane.YES_OPTION) {
+            new MenuInicial().setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
     private void btnMiPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMiPerfilActionPerformed
         new MiPerfil().setVisible(true);
         dispose();
     }//GEN-LAST:event_btnMiPerfilActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MenuPrincipal().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel BackgroundMenuPrincipal;

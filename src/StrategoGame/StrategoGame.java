@@ -19,6 +19,11 @@ public class StrategoGame extends javax.swing.JFrame {
 
     public StrategoGame() {
         initComponents();
+        
+          SwingUtilities.invokeLater(() -> {
+            visibilidadFichas();
+        });
+          
         tablero();
         zonasProhibidas();
         posicionFichas();
@@ -32,11 +37,9 @@ public class StrategoGame extends javax.swing.JFrame {
             @Override
             public void windowClosing(java.awt.event.WindowEvent e) {
                 new MenuPrincipal().setVisible(true);
-                dispose();
+                        dispose();
+
             }
-        });
-        SwingUtilities.invokeLater(() -> {
-            visibilidadFichas();
         });
     }
 
@@ -186,10 +189,8 @@ public class StrategoGame extends javax.swing.JFrame {
     private void batalla(Personajes villano, int fila, int col) {
 
         String nombreAtacante = personajeSeleccionado.getNombre();
-        String tipoAtacante = personajeSeleccionado.getTipo().toString().toUpperCase();
 
         String nombreDefensor = villano.getNombre();
-        String tipoDefensor = villano.getTipo().toString().toUpperCase();
 
         String mensaje = nombreAtacante + " vs " + nombreDefensor + " | \n";
 
@@ -432,25 +433,12 @@ public class StrategoGame extends javax.swing.JFrame {
                 ganador = nombreJugador1;
             }
             RegistroPartidas registro = new RegistroPartidas(nombreJugador1, nombreJugador2, ganador, bandoJugador1, bandoJugador2);
-            registro.setGanador(ganador);
             JOptionPane.showMessageDialog(this, "El juego ha terminado. Ganador: " + ganador + " (+3 puntos)");
             MenuPrincipal menu = new MenuPrincipal();
             menu.setVisible(true);
             this.dispose();
         }
     }//GEN-LAST:event_btnRetiroActionPerformed
-
- 
-    public static void main(String args[]) {
-
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new StrategoGame().setVisible(true);
-            }
-        });
-
-    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

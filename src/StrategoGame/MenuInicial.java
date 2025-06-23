@@ -1,5 +1,4 @@
 package StrategoGame;
-
 import javax.swing.*;
 import java.awt.*;
 

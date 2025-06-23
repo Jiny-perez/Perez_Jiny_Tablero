@@ -1,21 +1,33 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package StrategoGame;
 
+import javax.swing.JFrame;
 
 public class MiPerfil extends javax.swing.JFrame {
 
+    private Usuario usuario;
+    private RegistroPartidas[] registros;
+
     public MiPerfil() {
         initComponents();
+        this.usuario = usuario;
+        this.registros = registros;
+        setResizable(false);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                new MenuPrincipal().setVisible(true);
+                dispose();
+
+            }
+        });
     }
-    
+
     public MiPerfil(MenuPrincipal MenuPrinicipal) {
         initComponents();
     }
 
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -40,7 +52,7 @@ public class MiPerfil extends javax.swing.JFrame {
         });
         jPanel2.add(btnElminarCuenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 540, 330, 130));
 
-        BotonLog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Design/146 sin título_20250623072401.png"))); // NOI18N
+        BotonLog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Design/BotonLog.png"))); // NOI18N
         BotonLog.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         BotonLog.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -82,45 +94,14 @@ public class MiPerfil extends javax.swing.JFrame {
     }//GEN-LAST:event_btnElminarCuentaActionPerformed
 
     private void BotonLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonLogActionPerformed
-     
+        Log VentanaLog = new Log(usuario, registros);
+        VentanaLog.setVisible(true);
     }//GEN-LAST:event_BotonLogActionPerformed
 
     private void btnCambiarPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambiarPasswordActionPerformed
-    
+
     }//GEN-LAST:event_btnCambiarPasswordActionPerformed
 
-
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MiPerfil.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MiPerfil.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MiPerfil.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MiPerfil.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MiPerfil().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel BackgroundMiPerfil;

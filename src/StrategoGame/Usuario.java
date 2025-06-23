@@ -1,4 +1,3 @@
-
 package StrategoGame;
 
 public class Usuario {
@@ -17,12 +16,6 @@ public class Usuario {
         this.partidasConHeroes = 0;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-
-
     public void setPuntos(int puntos) {
         this.puntos = puntos;
     }
@@ -33,6 +26,22 @@ public class Usuario {
 
     public void setPartidasConVillanos(int partidasConVillanos) {
         this.partidasConVillanos = partidasConVillanos;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public int getPuntos() {
+        return puntos;
+    }
+
+    public int getPartidasConHeroes() {
+        return partidasConHeroes;
+    }
+
+    public int getPartidasConVillanos() {
+        return partidasConVillanos;
     }
 
     public boolean validarPassword(String pass) {
