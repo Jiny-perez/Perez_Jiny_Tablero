@@ -24,7 +24,17 @@ public class StrategoGame extends javax.swing.JFrame {
         posicionFichas();
         habilitarClickTablero();
         actualizarTurno();
-
+        
+        setResizable(false);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                new MenuPrincipal().setVisible(true);
+                dispose();
+            }
+        });
         SwingUtilities.invokeLater(() -> {
             visibilidadFichas();
         });
@@ -388,11 +398,11 @@ public class StrategoGame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1002, Short.MAX_VALUE)
+            .addGap(0, 990, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addComponent(BackgroundStrategoGame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 12, Short.MAX_VALUE)))
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
