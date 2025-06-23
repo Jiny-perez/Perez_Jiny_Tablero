@@ -19,6 +19,11 @@ public class RegistroPartidas {
         this.ganador = ganador;
         this.bandoJugador1 = bandoJugador1;
         this.bandoJugador2 = bandoJugador2;
+        this.ganador = ganador;
+    }
+
+    public void setGanador(String ganador) {
+        this.ganador = ganador;
     }
 
     public String getJugador1() {
@@ -40,8 +45,8 @@ public class RegistroPartidas {
     public String getBandoJugador2() {
         return bandoJugador2;
     }
-    
- public boolean ganoElJugador(String nombreJugador) {
+
+    public boolean ganoJugador(String nombreJugador) {
         return ganador.equals(nombreJugador);
     }
 }

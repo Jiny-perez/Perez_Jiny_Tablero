@@ -14,6 +14,9 @@ public class StrategoGame extends javax.swing.JFrame {
     private Personajes personajeSeleccionado = null;
     private boolean turnoJugador1 = true;
 
+    private String nombreJugador1;
+    private String nombreJugador2;
+
     public StrategoGame() {
         initComponents();
         tablero();
@@ -23,9 +26,22 @@ public class StrategoGame extends javax.swing.JFrame {
         actualizarTurno();
     }
 
-    public StrategoGame(MenuPrincipal menuPrinicipal) {
+    public StrategoGame(String nombreJugador1, String nombreJugador2) {
         initComponents();
-
+        this.nombreJugador1 = nombreJugador1;
+        this.nombreJugador2 = nombreJugador2;
+        tablero();
+        zonasProhibidas();
+        posicionFichas();
+        habilitarClickTablero();
+        actualizarTurno();
+        
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                new MenuInicial().setVisible(true);
+            }
+        });
     }
 
     private void tablero() {
@@ -216,18 +232,25 @@ public class StrategoGame extends javax.swing.JFrame {
 
     private void agregarDerrotado(Personajes derrotado) {
         ImageIcon imagenOculta = derrotado.getImagenOculta();
-        Image imagenEscalada = imagenOculta.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+        Image imagenEscalada = imagenOculta.getImage().getScaledInstance(100, 80, Image.SCALE_SMOOTH);
         JLabel ficha = new JLabel(new ImageIcon(imagenEscalada));
 
+        ficha.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
+        JPanel Destino;
         if (derrotado.getTipo() == Personajes.tipoPersonaje.heroes) {
-            jPDerrotasHeroes.add(ficha);
-            jPDerrotasHeroes.revalidate();
-            jPDerrotasHeroes.repaint();
+            Destino = jPDerrotasHeroes;
         } else {
-            jPDerrotasVillanos.add(ficha);
-            jPDerrotasVillanos.revalidate();
-            jPDerrotasVillanos.repaint();
+            Destino = jPDerrotasVillanos;
         }
+
+        if (Destino.getComponentCount() >= 5) {
+            Destino.remove(0);
+        }
+
+        Destino.add(ficha);
+        Destino.revalidate();
+        Destino.repaint();
     }
 
     private void visibilidadFichas() {
@@ -247,6 +270,8 @@ public class StrategoGame extends javax.swing.JFrame {
             }
         }
     }
+
+
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -255,10 +280,13 @@ public class StrategoGame extends javax.swing.JFrame {
         lblMensajeBatalla = new javax.swing.JLabel();
         BackgroundTablero = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
+        lblVillanos = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
+        lblHeroes = new javax.swing.JLabel();
         jPDerrotasVillanos = new javax.swing.JPanel();
         jPDerrotasHeroes = new javax.swing.JPanel();
         lblTurnos = new javax.swing.JLabel();
+        btnRetiro = new javax.swing.JToggleButton();
         jLabel3 = new javax.swing.JLabel();
         lblStrategoGame = new javax.swing.JLabel();
 
@@ -272,7 +300,7 @@ public class StrategoGame extends javax.swing.JFrame {
         Tablero.setDoubleBuffered(false);
         Tablero.setOpaque(false);
         Tablero.setLayout(new java.awt.GridLayout(10, 10));
-        BackgroundStrategoGame.add(Tablero, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 80, 700, 550));
+        BackgroundStrategoGame.add(Tablero, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 90, 700, 550));
 
         lblMensajeBatalla.setBackground(new java.awt.Color(51, 0, 0));
         lblMensajeBatalla.setFont(new java.awt.Font("Cooper Black", 1, 22)); // NOI18N
@@ -282,65 +310,58 @@ public class StrategoGame extends javax.swing.JFrame {
 
         BackgroundTablero.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Design/Tablero.png"))); // NOI18N
         BackgroundTablero.setText("jLabel1");
-        BackgroundStrategoGame.add(BackgroundTablero, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 80, 700, 550));
+        BackgroundStrategoGame.add(BackgroundTablero, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 90, 700, 550));
+
+        lblVillanos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Design/lblVillanos.png"))); // NOI18N
+        lblVillanos.setText("jLabel2");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 120, Short.MAX_VALUE)
+            .addComponent(lblVillanos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 38, Short.MAX_VALUE)
+            .addComponent(lblVillanos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         BackgroundStrategoGame.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 90, 120, -1));
+
+        lblHeroes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Design/lblHeroes.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 120, Short.MAX_VALUE)
+            .addComponent(lblHeroes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 38, Short.MAX_VALUE)
+            .addComponent(lblHeroes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         BackgroundStrategoGame.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 120, -1));
 
-        javax.swing.GroupLayout jPDerrotasVillanosLayout = new javax.swing.GroupLayout(jPDerrotasVillanos);
-        jPDerrotasVillanos.setLayout(jPDerrotasVillanosLayout);
-        jPDerrotasVillanosLayout.setHorizontalGroup(
-            jPDerrotasVillanosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 120, Short.MAX_VALUE)
-        );
-        jPDerrotasVillanosLayout.setVerticalGroup(
-            jPDerrotasVillanosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 490, Short.MAX_VALUE)
-        );
+        jPDerrotasVillanos.setBackground(new java.awt.Color(134, 4, 4));
+        BackgroundStrategoGame.add(jPDerrotasVillanos, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 140, 120, 500));
 
-        BackgroundStrategoGame.add(jPDerrotasVillanos, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 140, -1, -1));
-
-        javax.swing.GroupLayout jPDerrotasHeroesLayout = new javax.swing.GroupLayout(jPDerrotasHeroes);
-        jPDerrotasHeroes.setLayout(jPDerrotasHeroesLayout);
-        jPDerrotasHeroesLayout.setHorizontalGroup(
-            jPDerrotasHeroesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 120, Short.MAX_VALUE)
-        );
-        jPDerrotasHeroesLayout.setVerticalGroup(
-            jPDerrotasHeroesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 490, Short.MAX_VALUE)
-        );
-
-        BackgroundStrategoGame.add(jPDerrotasHeroes, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, 120, 490));
+        jPDerrotasHeroes.setBackground(new java.awt.Color(134, 4, 4));
+        BackgroundStrategoGame.add(jPDerrotasHeroes, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, 120, 500));
 
         lblTurnos.setBackground(new java.awt.Color(51, 0, 0));
         lblTurnos.setFont(new java.awt.Font("Cooper Black", 1, 24)); // NOI18N
         lblTurnos.setForeground(new java.awt.Color(0, 0, 0));
         lblTurnos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         BackgroundStrategoGame.add(lblTurnos, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 990, 30));
+
+        btnRetiro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Design/BotonRetiro.png"))); // NOI18N
+        btnRetiro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRetiroActionPerformed(evt);
+            }
+        });
+        BackgroundStrategoGame.add(btnRetiro, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 650, 280, 50));
 
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Design/153 sin título_20250622215612.png"))); // NOI18N
@@ -355,11 +376,11 @@ public class StrategoGame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 990, Short.MAX_VALUE)
+            .addGap(0, 1002, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addComponent(BackgroundStrategoGame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGap(0, 12, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -372,6 +393,30 @@ public class StrategoGame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnRetiroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetiroActionPerformed
+        int opcion = JOptionPane.showConfirmDialog(this,
+                "¿Estás seguro de que deseas retirarte?\nEl otro jugador ganará la partida.",
+                "Confirmar Retiro",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE);
+        if (opcion == JOptionPane.YES_OPTION) {
+            String ganador;
+            String bandoJugador1 = "Héroes";
+            String bandoJugador2 = "Villanos";
+            if (turnoJugador1) {
+                ganador = nombreJugador2;
+            } else {
+                ganador = nombreJugador1;
+            }
+            RegistroPartidas registro = new RegistroPartidas(nombreJugador1, nombreJugador2, ganador, bandoJugador1, bandoJugador2);
+            registro.setGanador(ganador);
+            JOptionPane.showMessageDialog(this, "El juego ha terminado. Ganador: " + ganador + " (+3 puntos)");
+            MenuPrincipal menu = new MenuPrincipal();
+            menu.setVisible(true);
+            this.dispose();
+        }
+    }//GEN-LAST:event_btnRetiroActionPerformed
 
     /**
      * @param args the command line arguments
@@ -392,13 +437,16 @@ public class StrategoGame extends javax.swing.JFrame {
     private javax.swing.JPanel BackgroundStrategoGame;
     private javax.swing.JLabel BackgroundTablero;
     private javax.swing.JPanel Tablero;
+    private javax.swing.JToggleButton btnRetiro;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPDerrotasHeroes;
     private javax.swing.JPanel jPDerrotasVillanos;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel lblHeroes;
     private javax.swing.JLabel lblMensajeBatalla;
     private javax.swing.JLabel lblStrategoGame;
     private javax.swing.JLabel lblTurnos;
+    private javax.swing.JLabel lblVillanos;
     // End of variables declaration//GEN-END:variables
 }

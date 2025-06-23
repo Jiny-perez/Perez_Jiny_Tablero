@@ -14,6 +14,13 @@ public class MenuPrincipal extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                new MenuInicial().setVisible(true);
+            }
+        });
+
     }
 
     public MenuPrincipal() {
@@ -103,7 +110,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Debe de existir dos jugadores registrados para jugar.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
         int jugadoresDisponibles = 0;
         for (int i = 0; i < CrearPlayer.totalJugadores; i++) {
             Usuario u = CrearPlayer.jugadores[i];
@@ -111,12 +117,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 jugadoresDisponibles++;
             }
         }
-
         if (jugadoresDisponibles == 0) {
             JOptionPane.showMessageDialog(this, "No hay jugadores disponibles diferentes al usuario actual.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
         String[] opciones = new String[jugadoresDisponibles];
         int posicionJugadores = 0;
         for (int i = 0; i < CrearPlayer.totalJugadores; i++) {
@@ -125,7 +129,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 opciones[posicionJugadores++] = u.getUsername();
             }
         }
-
         String jugadorElegido = (String) JOptionPane.showInputDialog(this, "Seleccione su contrincante:", "Elegir jugador", JOptionPane.PLAIN_MESSAGE, null, opciones, opciones[0]);
         if (jugadorElegido == null) {
             return;
@@ -138,32 +141,34 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 break;
             }
         }
-
         String[] bandos = {"Héroes", "Villanos"};
         String bandoElegido = (String) JOptionPane.showInputDialog(this, "Seleccione su bando:", "Elegir bando", JOptionPane.PLAIN_MESSAGE, null, bandos, bandos[0]);
         if (bandoElegido == null) {
             return;
         }
         String bandoOponente = bandoElegido.equals("Héroes") ? "Villanos" : "Héroes";
-
         JOptionPane.showMessageDialog(this,
                 "Iniciando partida:\n"
                 + LogIn.jugadorPrincipal.getUsername() + " (" + bandoElegido + ") vs "
                 + oponente.getUsername() + " (" + bandoOponente + ")");
 
-       ;
-       
-       new StrategoGame().setVisible(true);
-        dispose();
+        // Aquí pasamos los nombres reales a StrategoGame:
+        String jugador1 = LogIn.jugadorPrincipal.getUsername();
+        String jugador2 = oponente.getUsername();
+
+        StrategoGame juego = new StrategoGame(jugador1, jugador2);
+        juego.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnStrategoActionPerformed
 
     private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
-        new LogIn().setVisible(true);
+        new MenuInicial().setVisible(true);
         dispose();
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
     private void btnMiPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMiPerfilActionPerformed
-
+        new MiPerfil().setVisible(true);
+        dispose();
     }//GEN-LAST:event_btnMiPerfilActionPerformed
 
     /**
